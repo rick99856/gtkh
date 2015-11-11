@@ -32,18 +32,18 @@ import java.util.HashMap;
  */
 public class menu2_Fragment extends Fragment {
     private ProgressDialog pDialog;
-    private static String url = "http://data.kaohsiung.gov.tw/Opendata/DownLoad.aspx?Type=2&CaseNo1=AV&CaseNo2=1&FileType=1&Lang=C&FolderType=";
+    private static String url = "http://192.168.137.178/project_das/disease_all.php";
 
     // JSON Node names
 
-    private static final String TAG_Name = "Name";
-    private static final String TAG_Tel = "Tel";
-    private static final String TAG_Add = "Add";
-    private static final String TAG_Opentime = "Opentime";
-    private static final String TAG_Toldescribe = "Toldescribe";
-    private static final String TAG_Px = "Px";
-     private static final String TAG_Py = "Py";
-    private static final String TAG_pict = "Picture1";
+    private static final String TAG_Name = "name";
+    private static final String TAG_Danger = "danger";
+    private static final String TAG_Infection = "infection";
+    private static final String TAG_Info = "info";
+    private static final String TAG_Population = "population";
+    private static final String TAG_Symptom = "symptom";
+     private static final String TAG_Prevention = "prevention";
+    private static final String TAG_Treatment = "treatment";
 
     // contacts JSONArray
     JSONObject contacts = null;
@@ -78,100 +78,97 @@ public class menu2_Fragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
+            public void onItemClick(AdapterView<?> parsnt, View view,
                                     int position, long id) {
 
-                String Toldescribe = null;
-                String Opentime = null;
-                String Px = null;
-                String Py = null;
-                String Name = null;
-                String url = null;
+                String info = null;
+                String population = null;
+                String symptom = null;
+                String prevention = null;
+                String treatment = null;
+//                String url = null;
 
                 AlertDialog.Builder dialog=new AlertDialog.Builder(getActivity());
-                dialog.setTitle("詳細內容");
+                dialog.setTitle("detail");
                 JSONObject oo = new JSONObject(contactList.get(position));
                 Log.v("cont",contactList.get(position).toString());
                 try {
-                    Toldescribe = oo.getString("Toldescribe");
-                    Opentime = oo.getString("Opentime");
-                    Px = oo.getString("Px");
-                    Py = oo.getString("Py");
-                    Name = oo.getString("Name");
-                    url = oo.getString("Picture1");
+                    info = oo.getString("info");
+                    population = oo.getString("population");
+                    symptom = oo.getString("symptom");
+                    prevention = oo.getString("prevention");
+                    treatment = oo.getString("treatment");
+//                    url = oo.getString("Picture1");
 //                    Px = oo.getDouble();
 
-                    Log.v("照片的網址",url);
+//                    Log.v("照片的網址",url);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
 
-                dialog.setMessage("資訊:\n" + Toldescribe + "\n開放時間:\n        " + Opentime);
-                final String finalPx = Px;
-                final String finalPy = Py;
-                final String finalName = Name;
-                final String finalurl = url;
-                dialog.setNegativeButton("景點圖片", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent intent = new Intent();
-//                        intent.putExtra("Px", finalPx);
-//                        intent.putExtra("Py", finalPy);
-//                        intent.putExtra("info", finalName);
-//                        intent.setClass(getActivity(), Maplayout.class);
-//                        startActivity(intent);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        // Get the layout inflater
-                        LayoutInflater inflater = getActivity().getLayoutInflater();
-                        final View alert_view = inflater.inflate(R.layout.dialogout, null);
-
-                        // Inflate and set the layout for the dialog
-                        // Pass null as the parent view because its going in the dialog layout
-                        builder.setView(alert_view)
-                                // Add action buttons
-                                .setPositiveButton("yaya", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int id) {
-
-                                    }
-                                })
-                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-
-                                    }
-                                });
-
-                        new Thread(){
-                            @Override
-                            public void run(){
-
-                                final String pict = finalurl;
-                                final WebView webv = (WebView)alert_view.findViewById(R.id.webv);
-
-
-
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        webv.setWebViewClient(mWebViewClient);
-                                        webv.loadUrl(pict);
-                                        webv.getSettings().setBuiltInZoomControls(true);
-                                    }
-                                });
-                            }
-                        }.start();
+                dialog.setMessage("詳細資訊：\n        " + info + "\n感染年齡層：\n        " + population
+                                    + "\n感染症狀：\n        " + symptom+"\n預防方式：\n        "+prevention
+                                    + "\n治療方式：\n        " + treatment);
+//                final String finalPx = Px;
+//                final String finalPy = Py;
+//                final String finalName = Name;
+//                final String finalurl = url;
+//                dialog.setNegativeButton("景點圖片", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                        // Get the layout inflater
+//                        LayoutInflater inflater = getActivity().getLayoutInflater();
+//                        final View alert_view = inflater.inflate(R.layout.dialogout, null);
+//
+//                        // Inflate and set the layout for the dialog
+//                        // Pass null as the parent view because its going in the dialog layout
+//                        builder.setView(alert_view)
+//                                // Add action buttons
+//                                .setPositiveButton("yaya", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int id) {
+//
+//                                    }
+//                                })
+//                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int id) {
+//
+//                                    }
+//                                });
+//
+//                        new Thread(){
+//                            @Override
+//                            public void run(){
+//
+//                                final String pict = finalurl;
+//                                final WebView webv = (WebView)alert_view.findViewById(R.id.webv);
+//
+//
+//
+//                                getActivity().runOnUiThread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        webv.setWebViewClient(mWebViewClient);
+//                                        webv.loadUrl(pict);
+//                                        webv.getSettings().setBuiltInZoomControls(true);
+//                                    }
+//                                });
+//                            }
+//                        }.start();
 
 
-                        Log.v("final url",finalurl.toString());
+//                        Log.v("final url",finalurl.toString());
 
 
 
-                        builder.show();
-                    }
-
-
-                });
+//                        builder.show();
+//                    }
+//
+//
+//                });
 
 
                 dialog.setNeutralButton("離開", new DialogInterface.OnClickListener() {
@@ -239,28 +236,26 @@ public class menu2_Fragment extends Fragment {
                     for(int i =0;i<jsonOba.length();i++){
                         JSONObject c = jsonOba.getJSONObject(i);
 
-                        String add = c.getString(TAG_Add);
                         String name = c.getString(TAG_Name);
-                        String Tel = c.getString(TAG_Tel);
-                        String Toldescribe = c.getString(TAG_Toldescribe);
-                        String opentime = c.getString(TAG_Opentime);
-                        String px = c.getString(TAG_Px);
-                        String py = c.getString(TAG_Py);
-                        String pict = c.getString(TAG_pict);
-//                        String address = c.getString(TAG_ADDRESS);
-//                        String gender = c.getString(TAG_GENDER);
+                        String danger = c.getString(TAG_Danger);
+                        String infection = c.getString(TAG_Infection);
+                        String info = c.getString(TAG_Info);
+                        String population = c.getString(TAG_Population);
+                        String symptom = c.getString(TAG_Symptom);
+                        String prevention = c.getString(TAG_Prevention);
+                        String treatment = c.getString(TAG_Treatment);
 
                         HashMap<String, String> contact = new HashMap<String, String>();
 
 
                         contact.put(TAG_Name, name);
-                        contact.put(TAG_Tel, Tel);
-                        contact.put(TAG_Toldescribe,Toldescribe);
-                        contact.put(TAG_Opentime,opentime);
-                        contact.put(TAG_Add,add);
-                        contact.put(TAG_Px,px);
-                        contact.put(TAG_Py,py);
-                        contact.put(TAG_pict,pict);
+                        contact.put(TAG_Danger, danger);
+                        contact.put(TAG_Infection,infection);
+                        contact.put(TAG_Info,info);
+                        contact.put(TAG_Population,population);
+                        contact.put(TAG_Symptom,symptom);
+                        contact.put(TAG_Prevention,prevention);
+                        contact.put(TAG_Treatment,treatment);
 
 
 
@@ -292,8 +287,8 @@ public class menu2_Fragment extends Fragment {
              * */
             ListAdapter adapter = new SimpleAdapter(
                     getActivity(), contactList,
-                    R.layout.list_item2, new String[] { TAG_Name, TAG_Add,
-                    TAG_Tel }, new int[] { R.id.id,
+                    R.layout.list_item2, new String[] { TAG_Name, TAG_Danger,
+                    TAG_Infection }, new int[] { R.id.id,
                     R.id.name, R.id.tel });
 
             lv.setAdapter(adapter);
